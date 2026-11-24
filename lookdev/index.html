@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Look-dev — colourways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Shippori+Mincho:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#3A0A0F; --bg2:#2A0609; --fg:#EFE7D6; --ink:#0B0908; --accent:#E2B24C; --mute:#B9907F; --panel:#0B0908; --panelfg:#EFE7D6; }
+  [data-theme="oxblood"] { --bg:#3A0A0F; --bg2:#27060A; --fg:#EFE7D6; --ink:#0B0908; --accent:#E2B24C; --mute:#C19A8C; --panel:#0B0908; --panelfg:#EFE7D6; }
+  [data-theme="field"]   { --bg:#1B1E17; --bg2:#12140F; --fg:#E6DFCB; --ink:#090A07; --accent:#C2512C; --mute:#8F927C; --panel:#E6DFCB; --panelfg:#12140F; }
+  [data-theme="page"]    { --bg:#E8E1D1; --bg2:#D9D1BE; --fg:#0C0B0A; --ink:#0C0B0A; --accent:#EE4B1F; --mute:#6B655A; --panel:#0C0B0A; --panelfg:#E8E1D1; }
+  [data-theme="cursed"]  { --bg:#090D1C; --bg2:#05070F; --fg:#E9E6DD; --ink:#02030A; --accent:#4D6BFF; --mute:#7C86A8; --panel:#E9E6DD; --panelfg:#090D1C; }
+  [data-theme="blood"]   { --bg:#ECE7DC; --bg2:#DCD6C8; --fg:#0A0A0A; --ink:#0A0A0A; --accent:#B4101C; --mute:#6A665E; --panel:#0A0A0A; --panelfg:#ECE7DC; }
+  [data-theme="news"]    { --bg:#D9D7D0; --bg2:#C8C6BE; --fg:#111111; --ink:#111111; --accent:#F2C200; --mute:#5E5D58; --panel:#111111; --panelfg:#D9D7D0; }
+  [data-theme="aged"]    { --bg:#E3D5B8; --bg2:#D3C3A2; --fg:#17110B; --ink:#17110B; --accent:#9C2A1A; --mute:#6F5F47; --panel:#17110B; --panelfg:#E3D5B8; }
+  [data-theme="indigo"]  { --bg:#EAE6DC; --bg2:#DAD5C9; --fg:#0B0C12; --ink:#0B0C12; --accent:#2338C9; --mute:#62636B; --panel:#0B0C12; --panelfg:#EAE6DC; }
+  [data-theme="blood"] .slash path, [data-theme="news"] .slash path, [data-theme="aged"] .slash path, [data-theme="indigo"] .slash path { fill: var(--accent); }
+  [data-theme="blood"] .tone, [data-theme="news"] .tone, [data-theme="aged"] .tone, [data-theme="indigo"] .tone { opacity: .22; }
+  [data-theme="news"] .eyebrow, [data-theme="news"] .lede em { color: var(--fg); }
+  [data-theme="news"] .eyebrow i { background: var(--fg); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font-family: "Archivo", system-ui, sans-serif; overflow-x: hidden; transition: background .35s, color .35s; }
+  .switch { position: fixed; z-index: 20; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; gap: 6px; padding: 6px; background: rgba(0,0,0,.55); border-radius: 999px; backdrop-filter: blur(6px); }
+  .switch button { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .04em; color: #fff; background: transparent; border: 0; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+  .switch button[aria-pressed="true"] { background: #fff; color: #000; }
+  .switch button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .hero { position: relative; min-height: 100vh; padding: 28px clamp(20px, 4vw, 56px) 40px; display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; isolation: isolate; }
+  .grain { position: absolute; inset: -20%; z-index: 5; pointer-events: none; opacity: .34; mix-blend-mode: overlay; }
+  .tone { position: absolute; z-index: -1; right: -6vw; top: -8vh; width: 62vw; height: 120vh; background: radial-gradient(circle at 50% 50%, var(--ink) 0 38%, transparent 40%) 0 0 / 9px 9px; opacity: .38; -webkit-mask-image: linear-gradient(100deg, transparent 8%, #000 60%); mask-image: linear-gradient(100deg, transparent 8%, #000 60%); transform: rotate(-8deg); }
+  .slash { position: absolute; z-index: -1; left: -10vw; top: 30vh; width: 130vw; height: 44vh; }
+  .slash path { fill: var(--ink); }
+  [data-theme="page"] .slash path { fill: var(--accent); }
+  [data-theme="page"] .tone { opacity: .22; }
+
+  nav { display: flex; justify-content: space-between; align-items: baseline; font: 600 12px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+  nav .links { display: flex; gap: 28px; }
+  nav a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  nav a:hover, nav a:focus-visible { border-color: var(--accent); outline: none; }
+
+  .stage { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; padding-top: 5vh; }
+  .eyebrow { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: flex; gap: 14px; align-items: center; }
+  .eyebrow i { display: block; width: 44px; height: 2px; background: var(--accent); }
+  h1 { font-family: "Anton", "Archivo", sans-serif; font-weight: 400; text-transform: uppercase; line-height: .82; letter-spacing: -.01em; font-size: clamp(84px, 19.5vw, 330px); }
+  h1 span { display: block; }
+  h1 .b { color: transparent; -webkit-text-stroke: 2px var(--fg); margin-left: 7vw; }
+  [data-theme="oxblood"] h1 .b, [data-theme="cursed"] h1 .b, [data-theme="field"] h1 .b { color: var(--accent); -webkit-text-stroke: 0; }
+  .kanji { writing-mode: vertical-rl; font-family: "Shippori Mincho", serif; font-weight: 800; font-size: clamp(34px, 5vw, 76px); line-height: 1; letter-spacing: .12em; color: var(--fg); opacity: .92; padding-bottom: 1.2vw; }
+  .kanji small { font: 600 11px "JetBrains Mono", monospace; letter-spacing: .2em; opacity: .7; margin-top: 14px; }
+
+  .foot { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; gap: clamp(20px, 4vw, 64px); align-items: end; padding-top: 4vh; }
+  .lede { font-family: "Instrument Serif", serif; font-size: clamp(24px, 2.5vw, 40px); line-height: 1.08; max-width: 18ch; }
+  .lede em { color: var(--accent); font-style: italic; }
+  .meta { font: 400 13px/1.7 "JetBrains Mono", monospace; color: var(--mute); }
+  .meta b { color: var(--fg); font-weight: 600; }
+  .cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .btn { font: 800 14px "Archivo", sans-serif; font-stretch: 112%; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; padding: 16px 22px; background: var(--fg); color: var(--bg); clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
+  .btn.ghost { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 2px var(--fg); clip-path: none; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .work { background: var(--bg2); padding: clamp(48px, 8vw, 120px) clamp(20px, 4vw, 56px); position: relative; }
+  .work h2 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(48px, 9vw, 150px); line-height: .9; margin-bottom: 36px; }
+  .work h2 span { color: var(--accent); }
+  .panels { display: grid; grid-template-columns: 1.4fr 1fr; grid-auto-rows: minmax(190px, auto); gap: 10px; }
+  .p { position: relative; background: var(--panel); color: var(--panelfg); padding: 22px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+  .p:first-child { grid-row: span 2; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 46px)); padding-bottom: 70px; }
+  .p:nth-child(3) { clip-path: polygon(0 26px, 100% 0, 100% 100%, 0 100%); padding-top: 44px; }
+  .p .n { font: 600 11px "JetBrains Mono", monospace; letter-spacing: .14em; opacity: .7; }
+  .p h3 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(30px, 4.4vw, 68px); line-height: .92; margin: 10px 0; }
+  .p p { font-size: 15px; line-height: 1.45; max-width: 38ch; opacity: .86; }
+  .p .tag { align-self: flex-start; margin-top: 16px; font: 600 11px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; background: var(--accent); color: var(--ink); }
+  .p::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 220px; height: 220px; background: radial-gradient(circle, currentColor 0 34%, transparent 36%) 0 0 / 7px 7px; opacity: .16; }
+  @media (max-width: 760px) {
+    .stage { grid-template-columns: 1fr; }
+    .kanji { writing-mode: horizontal-tb; font-size: 28px; padding: 0; }
+    .foot { grid-template-columns: 1fr; }
+    .panels { grid-template-columns: 1fr; }
+    nav .links { gap: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+</style>
+</head>
+<body data-theme="page">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.018 0.09" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter>
+  <filter id="grainf"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0"/></filter>
+</svg>
+
+<header class="hero">
+  <svg class="grain" aria-hidden="true"><rect width="100%" height="100%" filter="url(#grainf)"/></svg>
+  <div class="tone" aria-hidden="true"></div>
+  <svg class="slash" viewBox="0 0 1300 440" preserveAspectRatio="none" aria-hidden="true"><path filter="url(#rough)" d="M-20 300 L1320 60 L1320 150 L-20 400 Z"/></svg>
+
+  <nav aria-label="Primary">
+    <span>DK — dimcodes09</span>
+    <span class="links"><a href="#work">Work</a><a href="#work">About</a><a href="#work">Contact</a></span>
+  </nav>
+
+  <div class="stage">
+    <div>
+      <p class="eyebrow"><i></i>Full stack developer · Bhopal, India</p>
+      <h1><span>Divyanshu</span><span class="b">Kubde</span></h1>
+    </div>
+    <p class="kanji" aria-hidden="true">第一章<small>CHAPTER 01</small></p>
+  </div>
+
+  <div class="foot">
+    <p class="lede">I build every layer of a product, <em>and I ship it.</em></p>
+    <p class="meta"><b>Now</b> — Full Stack Developer Intern, My Dukan<br><b>Stack</b> — Next.js · TypeScript · Node · Go<br><b>Status</b> — Open to freelance</p>
+    <div class="cta"><a class="btn" href="#work">View the work</a><a class="btn ghost" href="#work">Start a project</a></div>
+  </div>
+</header>
+
+<section class="work" id="work">
+  <h2>Selected <span>work</span></h2>
+  <div class="panels">
+    <article class="p"><div><span class="n">01 — ANDROID + ML</span><h3>Aawaz</h3><p>On-device detection of cloned voices during live calls. Audio never leaves memory.</p></div><span class="tag">Kotlin · ONNX · WebRTC</span></article>
+    <article class="p"><div><span class="n">02 — BLOCKCHAIN</span><h3>Legal TimeLock</h3><p>Tamper-evident document verification on Solana.</p></div><span class="tag">Best project · Kleos 4.0</span></article>
+    <article class="p"><div><span class="n">03 — FULL STACK</span><h3>Zyvora</h3><p>AI gifting with in-browser AR preview.</p></div><span class="tag">Top 10 · BGI Hackathon</span></article>
+  </div>
+</section>
+
+<div class="switch" role="group" aria-label="Colourway">
+  <button data-t="page" aria-pressed="true">1 · Orange</button>
+  <button data-t="blood" aria-pressed="false">2 · Blood</button>
+  <button data-t="news" aria-pressed="false">3 · Yellow</button>
+  <button data-t="aged" aria-pressed="false">4 · Aged</button>
+  <button data-t="indigo" aria-pressed="false">5 · Indigo</button>
+</div>
+<script>
+  const btns = document.querySelectorAll('.switch button');
+  const set = t => { document.body.dataset.theme = t; btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t)); };
+  btns.forEach(b => b.addEventListener('click', () => set(b.dataset.t)));
+  const q = new URLSearchParams(location.search).get('t'); if (q) set(q);
+</script>
+</body>
+</html>

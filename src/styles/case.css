@@ -1,0 +1,484 @@
+/* ------------------------------------------------------------------
+   Case study
+------------------------------------------------------------------- */
+.case__head {
+  position: relative;
+  isolation: isolate;
+  padding: calc(var(--bar-h) + clamp(1.5rem, 4vw, 3.5rem)) var(--gut)
+    clamp(1.5rem, 3vw, 2.5rem);
+  overflow: clip;
+}
+.case__ghost {
+  position: absolute;
+  z-index: -1;
+  right: -0.03em;
+  top: 0.16em;
+  font-size: clamp(12rem, 40vw, 40rem);
+  line-height: 0.8;
+  opacity: 0.12;
+  pointer-events: none;
+  user-select: none;
+}
+.case__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+.case__back span {
+  display: inline-block;
+  transition: transform var(--f6) var(--ease-slam);
+}
+.case__back:hover span {
+  transform: translateX(-5px);
+}
+.case__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: clamp(1.5rem, 4vw, 3.5rem) 0 1rem;
+  color: var(--mute);
+}
+.case__kicker .jp {
+  font-size: 1rem;
+  color: var(--accent);
+}
+.case__title {
+  margin: 0;
+  max-width: 11ch;
+  font-size: clamp(3.4rem, 12.6vw, 14rem);
+  line-height: 0.93;
+  overflow-wrap: anywhere;
+}
+.case__title--long {
+  font-size: clamp(3.1rem, 9.4vw, 10.5rem);
+  max-width: 14ch;
+}
+.case__lede {
+  margin: clamp(1.25rem, 2.6vw, 2.25rem) 0 0;
+  max-width: 24ch;
+  font-size: var(--fs-lede);
+}
+.case__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  gap: 1.25rem 2rem;
+  margin: clamp(2rem, 5vw, 4rem) 0 0;
+  padding-top: 1.25rem;
+  border-top: 3px solid var(--ink);
+}
+.case__meta dt {
+  margin-bottom: 0.4rem;
+  color: var(--mute);
+}
+.case__meta dd {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.case__meta .tag {
+  margin-right: 0.35rem;
+  vertical-align: 0.1em;
+}
+.case__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+}
+
+.case__cover {
+  padding: clamp(1rem, 2vw, 1.75rem) var(--gut) clamp(3rem, 6vw, 6rem);
+}
+.case__frame {
+  position: relative;
+  margin: 0;
+  border: 3px solid var(--ink);
+  background: var(--ink);
+  overflow: hidden;
+}
+.case__frame picture,
+.case__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.case__art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+@media (min-width: 900px) {
+  .case__cover .case__frame {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 3.2vw),
+      calc(100% - 3.2vw) 100%,
+      0 100%
+    );
+  }
+}
+
+.case__sec {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(3.5rem, 8vw, 8rem) var(--gut);
+}
+.case__label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  color: var(--mute);
+}
+.case__label span {
+  padding: 0.3rem 0.5rem;
+  background: var(--ink);
+  color: var(--paper);
+}
+.on-accent .case__label span {
+  background: var(--ink);
+  color: var(--paper);
+}
+.case__brief {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  padding-top: 0;
+}
+.case__big {
+  margin: 0;
+  max-width: 21ch;
+  font-size: clamp(1.9rem, 3.7vw, 3.6rem);
+}
+.case__body {
+  margin: 0;
+  max-width: 38rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  line-height: 1.55;
+}
+@media (min-width: 900px) {
+  .case__brief {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.case__h {
+  margin: 0;
+  font-size: var(--fs-h2);
+  max-width: 13ch;
+}
+.case__sub {
+  margin: 1.1rem 0 0;
+  color: var(--mute);
+}
+.case__points {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 35%, transparent);
+}
+.case__points li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 2.6vw, 2rem) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 35%, transparent);
+}
+.case__points .label {
+  padding-top: 0.35rem;
+  color: var(--accent-hi);
+}
+.case__points p {
+  margin: 0;
+  max-width: 62rem;
+  font-size: clamp(1.1rem, 1.75vw, 1.65rem);
+  line-height: 1.42;
+}
+@media (min-width: 900px) {
+  .case__points li {
+    grid-template-columns: 6rem minmax(0, 1fr);
+  }
+}
+
+/* Flow: each step is a small manga panel, read left to right. */
+.flow {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  counter-reset: none;
+}
+.flow__step {
+  position: relative;
+  padding: 1.1rem 1.15rem 1.3rem;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+}
+.flow__step:not(:last-child)::after {
+  content: "↓";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 3px);
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  font: 700 1.1rem/1 var(--font-sans);
+  color: var(--accent);
+}
+.flow__no {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  background: var(--ink);
+  color: var(--paper);
+}
+.flow__label {
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 0.92;
+}
+.flow__detail {
+  margin: 0.55rem 0 0;
+  line-height: 1.45;
+}
+@media (min-width: 700px) {
+  .flow {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1.5rem 1.9rem;
+  }
+  .flow__step:not(:last-child)::after {
+    content: "→";
+    left: calc(100% + 3px);
+    top: 50%;
+    width: 1.9rem;
+    transform: translateY(-50%);
+  }
+}
+
+@media (min-width: 1000px) {
+  /* Six steps read better as two rows of three than as five plus one. */
+  .flow--six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.case__gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+.case__shot {
+  margin: 0;
+}
+.case__shot figcaption {
+  margin-top: 0.75rem;
+  color: var(--mute);
+}
+/* Portrait phone screenshots sit at phone size on a dark mount. */
+.case__shot--phone .case__frame {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem) 1.25rem;
+}
+.case__shot--phone .case__frame picture {
+  width: min(100%, 20rem);
+  border: 2px solid color-mix(in srgb, var(--paper) 28%, transparent);
+  border-radius: 1.4rem;
+  overflow: hidden;
+}
+@media (min-width: 900px) {
+  .case__gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .case__shot:nth-child(even) {
+    margin-top: clamp(2rem, 6vw, 6rem);
+  }
+}
+
+.case__result {
+  overflow: clip;
+}
+.case__outcome {
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(2.4rem, 6.4vw, 6.5rem);
+  line-height: 0.97;
+}
+.case__foot {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--ink);
+}
+.case__foot .label {
+  margin: 0 0 0.75rem;
+}
+.case__stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+.case__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.case__note {
+  margin: 2rem 0 0;
+  max-width: 44rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+@media (min-width: 900px) {
+  .case__foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.case__next {
+  border-top: 1px solid color-mix(in srgb, var(--paper) 35%, transparent);
+}
+.case__nextlink {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(3rem, 8vw, 7rem) var(--gut);
+  text-decoration: none;
+  overflow: clip;
+}
+/* The next project as a 3D volume (faces are styled in sections.css). */
+.nextvol {
+  --u: clamp(0.82rem, 1.3vw, 1.32rem);
+  --w: calc(9.2 * var(--u));
+  display: block;
+  width: max-content;
+  margin: 1.5rem 0 0 calc(var(--w) * 0.55);
+  perspective: 1300px;
+}
+.nextvol__turn {
+  display: block;
+  transform-style: preserve-3d;
+  transform: rotateY(-46deg);
+}
+.nextvol .tome__box {
+  transition: transform 0.38s var(--ease-slam);
+}
+@media (hover: hover) {
+  .case__nextlink:hover .nextvol .tome__box,
+  .case__nextlink:focus-visible .nextvol .tome__box {
+    transform: translateZ(calc(var(--w) * -0.34)) rotateY(-17deg);
+  }
+}
+@media (min-width: 900px) {
+  .case__nextlink {
+    padding-right: calc(var(--gut) + 27vw);
+  }
+  .nextvol {
+    position: absolute;
+    right: calc(var(--gut) + 9vw);
+    top: 50%;
+    margin: calc(var(--u) * -6.75) 0 0;
+  }
+}
+
+.case__nextlink .label {
+  color: var(--accent-hi);
+}
+.case__nexttitle {
+  font-size: clamp(3.2rem, 12vw, 13rem);
+  line-height: 0.94;
+  overflow-wrap: anywhere;
+  color: transparent;
+  -webkit-text-stroke: max(1.5px, 0.012em) var(--paper);
+  transition:
+    color var(--f6) var(--ease-slam),
+    -webkit-text-stroke-color var(--f6) var(--ease-slam);
+}
+.case__nextkicker {
+  font-size: clamp(1.3rem, 2.2vw, 2.1rem);
+}
+.case__nextkicker span {
+  display: inline-block;
+  transition: transform var(--f6) var(--ease-slam);
+}
+.case__nextlink:hover .case__nexttitle,
+.case__nextlink:focus-visible .case__nexttitle {
+  color: var(--paper);
+}
+.case__nextlink:hover .case__nextkicker span {
+  transform: translateX(10px);
+}
+.case__nextlink:focus-visible {
+  outline-offset: -8px;
+}
+
+/* ------------------------------------------------------------------
+   404
+------------------------------------------------------------------- */
+.lost {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+  padding: calc(var(--bar-h) + 2rem) var(--gut) 4rem;
+  overflow: clip;
+}
+.lost__art {
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+  width: min(58vw, 52rem);
+  height: 100%;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+}
+.lost__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+@media (max-width: 767px) {
+  .lost__art {
+    width: 100%;
+    opacity: 0.35;
+  }
+}
+.lost__ghost {
+  position: absolute;
+  z-index: -1;
+  right: -0.04em;
+  bottom: -0.1em;
+  font-size: clamp(14rem, 46vw, 46rem);
+  line-height: 0.8;
+  opacity: 0.12;
+}
+.lost h1 {
+  margin: 0;
+  font-size: var(--fs-h2);
+  max-width: 10ch;
+}
+.lost p {
+  margin: 0;
+  max-width: 36ch;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+}

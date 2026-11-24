@@ -1,0 +1,874 @@
+@import "tailwindcss";
+@import "../styles/hero.css";
+@import "../styles/sections.css";
+@import "../styles/case.css";
+
+/* ------------------------------------------------------------------
+   Tokens. Four colourways on the same "manga page" system:
+   paper, ink, and exactly one accent.
+------------------------------------------------------------------- */
+:root,
+[data-theme="blood"] {
+  --paper: #ece7dc;
+  --paper-2: #dfd9cb;
+  --ink: #0a0a0a;
+  --accent: #b4101c;
+  --accent-hi: #ee3b47; /* accent that stays readable on ink */
+  --mute: #5c5850;
+  --on-accent: #f6f1e6;
+}
+[data-theme="aged"] {
+  --paper: #e3d5b8;
+  --paper-2: #d4c4a3;
+  --ink: #17110b;
+  --accent: #932517;
+  --accent-hi: #e8593f;
+  --mute: #584c37;
+  --on-accent: #f4e9d2;
+}
+[data-theme="indigo"] {
+  --paper: #e9e6dd;
+  --paper-2: #d9d5ca;
+  --ink: #0b0c12;
+  --accent: #1f3fae;
+  --accent-hi: #7c95ff;
+  --mute: #585962;
+  --on-accent: #eef0fb;
+}
+[data-theme="moss"] {
+  --paper: #e7e4d6;
+  --paper-2: #d6d3c1;
+  --ink: #0d100c;
+  --accent: #33603b;
+  --accent-hi: #7cc089;
+  --mute: #585b4f;
+  --on-accent: #eef3e6;
+}
+
+:root {
+  --font-display: var(--font-anton), "Arial Narrow", Impact, sans-serif;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-jp: var(--font-shippori), "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  --gut: clamp(1.25rem, 4vw, 3.75rem);
+  --bar-h: 4rem;
+  --rule: 2px;
+
+  --fs-hero: clamp(4.5rem, 19.4vw, 21.5rem);
+  --fs-h2: clamp(3.5rem, 11vw, 12rem);
+  --fs-h3: clamp(2.1rem, 5vw, 4.75rem);
+  --fs-lede: clamp(1.5rem, 2.6vw, 2.6rem);
+  --fs-body: clamp(1rem, 0.35vw + 0.93rem, 1.14rem);
+  --fs-label: 0.75rem;
+
+  /* Motion, counted in frames at 24 fps. */
+  --f2: 83ms;
+  --f6: 250ms;
+  --f12: 500ms;
+  --ease-slam: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cut: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-mute: var(--mute);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  scroll-padding-top: var(--bar-h);
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+html.theme-shift,
+html.theme-shift * {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease !important;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html[data-loading] body {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.on-ink :focus-visible,
+.menu :focus-visible {
+  outline-color: var(--accent-hi);
+}
+.on-accent :focus-visible {
+  outline-color: var(--ink);
+}
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font: 600 0.8rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------
+   Type helpers
+------------------------------------------------------------------- */
+/* :where() keeps these at zero specificity, so a component class can always
+   override them regardless of source order. Anton's capitals are 0.86em tall,
+   so stacked lines need a line-height of about 0.94 to stay apart. */
+:where(.display) {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.94;
+  letter-spacing: -0.005em;
+}
+:where(.label) {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+:where(.serif) {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+}
+.serif em,
+em.serif {
+  font-style: italic;
+}
+.jp {
+  font-family: var(--font-jp);
+  font-weight: 800;
+}
+.accent {
+  color: var(--accent);
+}
+.on-ink .accent {
+  color: var(--accent-hi);
+}
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 0.012em currentColor;
+  -webkit-text-stroke: max(1.5px, 0.012em) var(--ink);
+}
+.on-ink .outline-text {
+  -webkit-text-stroke-color: var(--paper);
+}
+
+/* ------------------------------------------------------------------
+   Surfaces
+------------------------------------------------------------------- */
+.on-paper {
+  background: var(--paper);
+  color: var(--ink);
+}
+.on-paper-2 {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+.on-ink {
+  background: var(--ink);
+  color: var(--paper);
+  --mute: color-mix(in srgb, var(--paper) 62%, var(--ink));
+}
+.on-accent {
+  background: var(--accent);
+  color: var(--on-accent);
+  --mute: color-mix(in srgb, var(--on-accent) 90%, var(--accent));
+}
+
+/* Paper grain over everything. An inline SVG noise tile: no network request,
+   rasterised once, and no blend mode, so it costs nothing while scrolling. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .07 0 0 0 0 .07 0 0 0 0 .07 0 0 0 .9 -.28'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  opacity: 0.36;
+}
+
+/* Halftone screentone patch. Size and fade set per use. */
+.tone {
+  --dot: 9px;
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(
+      circle at 50% 50%,
+      currentColor 0 36%,
+      transparent 38%
+    )
+    0 0 / var(--dot) var(--dot);
+  opacity: 0.2;
+}
+
+/* ------------------------------------------------------------------
+   Buttons
+------------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.05rem 1.5rem 1.05rem 1.35rem;
+  font: 800 0.875rem var(--font-sans);
+  font-stretch: 112%;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  transition:
+    background-color var(--f6) var(--ease-slam),
+    color var(--f6) var(--ease-slam);
+  cursor: pointer;
+  border: 0;
+  will-change: transform;
+}
+.btn:hover {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--on-accent);
+}
+.btn .arrow {
+  display: inline-block;
+  transition: transform var(--f6) var(--ease-slam);
+}
+.btn:hover .arrow {
+  transform: translateX(5px);
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  clip-path: none;
+  box-shadow: inset 0 0 0 2px var(--ink);
+  padding-right: 1.35rem;
+}
+.btn--ghost:hover {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+}
+.on-ink .btn {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+}
+.on-ink .btn:hover {
+  --btn-bg: var(--accent-hi);
+  --btn-fg: var(--ink);
+}
+.on-ink .btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--paper);
+}
+.on-ink .btn--ghost:hover {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+}
+.on-accent .btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+}
+.on-accent .btn:hover {
+  --btn-bg: var(--on-accent);
+  --btn-fg: var(--ink);
+}
+
+.textlink {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-thickness var(--f6) var(--ease-slam);
+}
+.textlink:hover {
+  text-decoration-thickness: 5px;
+}
+.on-ink .textlink {
+  text-decoration-color: var(--accent-hi);
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.38rem 0.6rem;
+  font: 600 0.6875rem var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  background: var(--ink);
+  color: var(--paper);
+}
+.tag--accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.tag--line {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.on-ink .tag {
+  background: var(--paper);
+  color: var(--ink);
+}
+.on-ink .tag--accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.on-ink .tag--line {
+  background: transparent;
+  color: var(--paper);
+}
+
+/* ------------------------------------------------------------------
+   Top bar
+------------------------------------------------------------------- */
+.topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 70;
+  height: var(--bar-h);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-inline: var(--gut);
+  color: var(--ink);
+  border-bottom: var(--rule) solid transparent;
+  transition:
+    background-color var(--f6) ease,
+    border-color var(--f6) ease;
+}
+.topbar.is-stuck {
+  background: var(--paper);
+  border-bottom-color: var(--ink);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  margin-right: auto;
+}
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 1.2rem/1 var(--font-display);
+  letter-spacing: 0.02em;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 18% 100%, 0 82%);
+  transition: background-color var(--f6) ease;
+}
+.brand:hover .brand__mark {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.brand__handle {
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.topbar__nav {
+  display: none;
+  gap: clamp(1rem, 2.2vw, 2rem);
+}
+.navlink {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding-block: 0.5rem;
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.navlink__no {
+  font-size: 0.625rem;
+  color: var(--mute);
+}
+.navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.2rem;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--f6) var(--ease-slam);
+}
+.navlink:hover::after,
+.navlink:focus-visible::after {
+  transform: scaleX(1);
+}
+.topbar__tools {
+  display: none;
+  align-items: center;
+  gap: 1.25rem;
+}
+.theme-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+.theme-dot {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.theme-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0.34rem;
+  border-radius: 50%;
+  background: var(--dot);
+  transition: transform var(--f6) var(--ease-slam);
+}
+.theme-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0.1rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px currentColor;
+  opacity: 0;
+  transition: opacity var(--f6) ease;
+}
+.theme-dot:hover::before {
+  transform: scale(1.25);
+}
+.theme-dot[aria-pressed="true"]::after {
+  opacity: 1;
+}
+.motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 600 0.6875rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.motion-toggle__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.on-ink .motion-toggle__dot,
+.menu .motion-toggle__dot {
+  background: var(--accent-hi);
+}
+.motion-toggle[aria-pressed="true"] .motion-toggle__dot {
+  animation: blink 1.2s steps(2, jump-none) infinite;
+}
+.motion-toggle[aria-pressed="false"] .motion-toggle__dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+/* The chapter menu is a <dialog> opened by script, so the button only shows
+   when scripts run. Without them the page is one long readable scroll. */
+.menu-btn {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.menu-btn__bars {
+  width: 1.4rem;
+  height: 0.55rem;
+  border-block: 2px solid currentColor;
+}
+html.js .menu-btn {
+  display: inline-flex;
+}
+@media (min-width: 900px) {
+  .topbar__nav {
+    display: flex;
+  }
+  .topbar__tools {
+    display: inline-flex;
+  }
+  html.js .menu-btn {
+    display: none;
+  }
+}
+
+/* Chapter menu (mobile and tablet) */
+.menu {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  overflow: auto;
+}
+.menu::backdrop {
+  background: var(--ink);
+}
+.menu[open] {
+  animation: menu-in 0.45s var(--ease-cut);
+}
+@keyframes menu-in {
+  from {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+.menu__inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--gut) 1.75rem;
+}
+.menu__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--bar-h);
+  color: color-mix(in srgb, var(--paper) 62%, var(--ink));
+}
+.menu__close {
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--paper);
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.menu__list {
+  list-style: none;
+  margin: auto 0;
+  padding: 1rem 0;
+}
+.menu__link {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr auto;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent);
+}
+.menu__no {
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--accent-hi);
+}
+.menu__label {
+  font: 400 clamp(2.1rem, 9.5vw, 4rem) / 1.02 var(--font-display);
+  text-transform: uppercase;
+}
+.menu__jp {
+  font-family: var(--font-jp);
+  font-size: 0.9rem;
+  opacity: 0.55;
+}
+.menu__link:hover .menu__label,
+.menu__link:focus-visible .menu__label {
+  color: var(--accent-hi);
+}
+.menu__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+/* ------------------------------------------------------------------
+   Progress rail, cursor trail, page transition
+------------------------------------------------------------------- */
+.rail {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .rail {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    z-index: 65;
+    pointer-events: none;
+  }
+  .rail__bar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+}
+
+.rail__chapter {
+  position: absolute;
+  left: 0.95rem;
+  bottom: 1.5rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font: 600 0.6875rem var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* reads on paper, ink and the accent alike */
+  color: #fff;
+  mix-blend-mode: difference;
+  opacity: 0;
+}
+.rail__chapter.is-shown {
+  animation: rail-in 0.3s steps(4) both;
+}
+@keyframes rail-in {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Pointer follower: dot, ring over links, labelled disc over tagged targets. */
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 85;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.cursor.is-on {
+  opacity: 1;
+}
+.cursor::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition:
+    transform var(--f6) var(--ease-slam),
+    background-color var(--f6) ease,
+    box-shadow var(--f6) ease;
+}
+.cursor.is-link::before {
+  transform: scale(3.4);
+  background: transparent;
+  box-shadow: inset 0 0 0 0.6px var(--accent);
+}
+.cursor.is-label::before {
+  transform: scale(7.6);
+}
+.cursor__label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%) scale(0);
+  font: 800 0.6875rem var(--font-sans);
+  font-stretch: 112%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--on-accent);
+  transition: transform var(--f6) var(--ease-slam);
+}
+.cursor.is-label .cursor__label {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Original ink artwork: black on white, blended onto the page. */
+.art,
+.art img {
+  display: block;
+}
+
+.ink-trail {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.pt {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  visibility: hidden;
+}
+.pt.is-active {
+  visibility: visible;
+  pointer-events: auto;
+}
+.pt__sheet {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  clip-path: polygon(0 0, 0 0, -30% 100%, -30% 100%);
+}
+/* One-frame impact: ink field with radiating speed lines. */
+.pt__burst {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, var(--paper) 0 9%, transparent 10%),
+    repeating-conic-gradient(
+      from 3deg at 50% 50%,
+      var(--paper) 0 0.9deg,
+      var(--ink) 0.9deg 3.6deg
+    );
+}
+
+/* ------------------------------------------------------------------
+   Reveal on scroll. Pre-hidden only when JS is present and motion is on;
+   with JS off or motion off everything is simply visible.
+   Opacity and clip-path are used rather than visibility, so content that
+   has not animated in yet can still take keyboard focus and be found with
+   find-in-page. Focusing it scrolls it into view, which reveals it.
+------------------------------------------------------------------- */
+html.js[data-motion="on"]:not(.fx-fallback) [data-reveal]:not(.is-in) {
+  opacity: 0;
+}
+html.js[data-motion="on"]:not(.fx-fallback) [data-reveal="clip"]:not(.is-in) {
+  opacity: 1;
+  clip-path: inset(0% 100% 0% 0%);
+}
+html.js[data-motion="on"]:not(.fx-fallback) [data-reveal="slit"]:not(.is-in) {
+  opacity: 1;
+  clip-path: inset(50% 0% 50% 0%);
+}
+
+/* ------------------------------------------------------------------
+   Motion off: stop every looping or decorative animation.
+------------------------------------------------------------------- */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-motion="off"] .tape__track {
+  animation: none !important;
+}
