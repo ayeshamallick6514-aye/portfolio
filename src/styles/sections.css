@@ -776,6 +776,39 @@ a.row__link:focus-visible .row__meta {
   mix-blend-mode: multiply;
   pointer-events: none;
 }
+
+/* Realistic manga eyelids for scroll blinking */
+.yumeko-eyelid {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 52%;
+  background: #0f0a0c;
+  z-index: 2;
+  pointer-events: none;
+  transform: scaleY(0);
+}
+.yumeko-eyelid--top {
+  top: 0;
+  transform-origin: top center;
+  border-bottom: 2px solid var(--accent);
+}
+.yumeko-eyelid--bottom {
+  bottom: 0;
+  transform-origin: bottom center;
+  border-top: 2px solid var(--accent);
+}
+
+.yumeko-eye-flare-cut {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 35% 45%, rgba(229, 9, 20, 0.45) 0%, transparent 40%),
+              radial-gradient(circle at 65% 45%, rgba(229, 9, 20, 0.45) 0%, transparent 40%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+}
 /* focus lines at the edges, jittering on twos */
 .statement__lines {
   position: absolute;
