@@ -15,7 +15,6 @@ export default function Statement() {
   const cutRef = useRef<HTMLDivElement>(null);
   const lidTopRef = useRef<HTMLDivElement>(null);
   const lidBottomRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -23,12 +22,12 @@ export default function Statement() {
       const section = containerRef.current;
       const lidTop = lidTopRef.current;
       const lidBottom = lidBottomRef.current;
-      const glow = glowRef.current;
+      const cut = cutRef.current;
       if (!section || !lidTop || !lidBottom) return;
 
       // Eye blink timeline tied to scroll position
       // As the user scrolls into view, the eyes blink (eyelids close down and open back up)
-      // multiple times, finishing in full ecstatic crimson glow!
+      // finishing in full ecstatic wide stare!
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -63,12 +62,10 @@ export default function Statement() {
           duration: 0.18,
           ease: "elastic.out(1, 0.4)",
         })
-        // As eyes snap wide open, crimson glow surges
         .to(
-          glow,
+          cut,
           {
-            opacity: 0.85,
-            scale: 1.15,
+            boxShadow: "0 0 45px rgba(229, 9, 20, 0.7)",
             duration: 0.25,
             ease: "power2.out",
           },
@@ -86,11 +83,10 @@ export default function Statement() {
     >
       {hasArt("eyes") ? (
         <div className="statement__cut" ref={cutRef} data-reveal="slit">
-          <span className="statement__lines" aria-hidden="true" />
           <Art
             name="eyes"
             className="statement__art"
-            zoom={1.16}
+            zoom={1.04}
             sizes="100vw"
           />
 
@@ -105,9 +101,6 @@ export default function Statement() {
             className="yumeko-eyelid yumeko-eyelid--bottom"
             aria-hidden="true"
           />
-
-          {/* Glowing crimson aura behind eyelids */}
-          <div ref={glowRef} className="yumeko-eye-flare-cut" aria-hidden="true" />
         </div>
       ) : null}
       <p

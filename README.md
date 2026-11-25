@@ -11,7 +11,7 @@ The site is one long page in eight chapters, plus a full page for each project.
 | Chapter | What it shows |
 |---|---|
 | 01 Opening | Name, role, current role at BTG Venture, and living ink illustration |
-| 02 Selected work | VERITAS, UNITY, LogAnchor-X, CarePilot AI, Zyvora |
+| 02 Selected work | VERITAS, UNITY, LogAnchor-X, Halcyon 2000, Zyvora |
 | 03 Stack | Seven layers, from languages to shipping, that stack as you scroll |
 | 04 Story | Manga panels and authentic off-the-page photos |
 | 05 Experience | AI & Technology Internship at BTG Venture, education at OIST Bhopal |

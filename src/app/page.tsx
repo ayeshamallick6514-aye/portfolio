@@ -11,26 +11,25 @@ import { Experience, Receipts, Services } from "@/components/sections/Career";
 import { Contact, Credits } from "@/components/sections/Contact";
 
 const stackTape = [
-  "Next.js",
+  "Python",
   "TypeScript",
-  "Node.js",
-  "Go",
   "React",
+  "Next.js",
+  "Node.js",
   "MongoDB",
-  "PostgreSQL",
   "Docker",
+  "Algorand",
 ];
 const mottoTape = ["Full stack", "No fluff", "Real ship", "Open to freelance"];
 const proofTape = [
-  "NASA Space Apps · 2nd place",
-  "TIT Srijan · 2nd Runner-Up",
-  "Kleos 4.0 · Best Project",
-  "Buildathon LNCT · Top 6",
-  "HH Goa · Top 10",
-  "BGI · Top 10",
-  "MPOnline · Top 20",
+  "SIH 2026 · Team Lead (NTRO)",
+  "MPOnline 2026 · HackHer Squad",
+  "BGI Hackathon · Top 10",
+  "CII IDS Hackathon · Top 10",
   "Build What Moves India · Top 250",
   "Hack In Motion · Top 10",
+  "NPTEL · IIT Madras · 4 Credits",
+  "BTG Venture · AI & Tech Intern",
 ];
 const hireTape = [
   "Open to freelance",

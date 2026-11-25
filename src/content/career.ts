@@ -218,7 +218,7 @@ export const services: Service[] = [
     no: "01",
     title: "AI & RAG Systems",
     body: "Explainable clinical guidance, RAG policy intelligence, vector search with FAISS, and voice/OCR intake pipelines.",
-    proof: "VERITAS · UNITY · CarePilot AI",
+    proof: "VERITAS · UNITY · Halcyon 2000",
   },
   {
     no: "02",
