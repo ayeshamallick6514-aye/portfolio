@@ -128,17 +128,17 @@ html[data-loading] .hero [data-intro] {
   fill: var(--accent);
 }
 
-/* The living panel: original ink art on the right, bottom-anchored. Its left
-   edge fades out so it never sits under the text. */
+/* The living panel: Yumeko full-bleed hero artwork extending to the top & right edges */
 .hero__art {
   position: absolute;
   z-index: -1;
   right: 0;
+  top: 0;
   bottom: 0;
-  width: min(60vw, 70rem);
-  height: 76%;
-  -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 36%);
-  mask-image: linear-gradient(90deg, transparent 18%, #000 36%);
+  width: min(65vw, 75rem);
+  height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 28%);
+  mask-image: linear-gradient(90deg, transparent 5%, #000 28%);
   will-change: transform;
 }
 
@@ -188,8 +188,8 @@ html[data-loading] .hero [data-intro] {
 .yumeko-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: 85% 100%;
+  object-fit: cover;
+  object-position: 80% 20%;
   mix-blend-mode: multiply;
   transform: translate(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 8px));
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
