@@ -202,7 +202,7 @@ export const stackLayers: StackLayer[] = [
     no: "06",
     name: "Tools & Ship",
     blurb: "What gets it live",
-    tech: ["Git", "GitHub", "Vercel", "Streamlit Cloud", "Postman", "Salesforce CRM"],
+    tech: ["Docker", "AWS", "GCP", "Git", "GitHub", "Vercel", "Streamlit Cloud", "Postman"],
   },
 ];
 
