@@ -1,6 +1,6 @@
 import { profile } from "@/content/profile";
 import { ChapterLink } from "@/components/chrome/TLink";
-import LivingArt from "@/components/ui/LivingArt";
+import YumekoHeroArt from "@/components/ui/YumekoHeroArt";
 import HeroCanvas from "./HeroCanvas";
 import HeroIntro from "./HeroIntro";
 import HeroDepth from "./HeroDepth";
@@ -16,16 +16,9 @@ export default function Hero() {
 
       <HeroCanvas />
 
-      {/* Original ink art, drawn by a shader so the coat and the ink move. */}
-      <div className="hero__art" data-intro="art">
-        <LivingArt
-          name="hero"
-          position={[72, 100]}
-          focus={[0.62, 0.55]}
-          radius={0.5}
-          strength={0.0046}
-          parallax={18}
-        />
+      {/* Interactive Yumeko Jabami artwork with floating cards & glowing crimson gaze */}
+      <div className="hero__art hero__art--yumeko" data-intro="art" data-parallax="18">
+        <YumekoHeroArt />
       </div>
 
       <div className="hero__stage">

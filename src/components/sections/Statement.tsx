@@ -29,13 +29,13 @@ export default function Statement() {
         data-inkfill
       >
         <span>Full stack</span>
-        <i>✦</i>
-        <span className="outline-text">No fluff</span>
-        <i>✦</i>
+        <i>♠</i>
+        <span className="outline-text">No bluff</span>
+        <i>♥</i>
         <span>Real ship</span>
-        <i>✦</i>
+        <i>♦</i>
         <span className="outline-text statement__last">
-          Shipping &gt; scrolling
+          High stakes &gt; safe plays ♣
         </span>
       </p>
     </section>

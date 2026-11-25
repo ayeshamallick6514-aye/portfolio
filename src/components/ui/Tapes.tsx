@@ -14,7 +14,7 @@ function Track({ items }: { items: string[] }) {
           {run.map((t, i) => (
             <span key={i} className="tape__item">
               {t}
-              <span className="tape__star">✦</span>
+              <span className="tape__star">♠</span>
             </span>
           ))}
         </span>
