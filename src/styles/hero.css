@@ -143,7 +143,7 @@ html[data-loading] .hero [data-intro] {
 }
 
 /* ------------------------------------------------------------------
-   Interactive Yumeko Jabami Styling & Floating Cards
+   Interactive Yumeko Jabami Styling & 3D Rotating Cards
 ------------------------------------------------------------------- */
 .yumeko-art {
   position: absolute;
@@ -151,23 +151,31 @@ html[data-loading] .hero [data-intro] {
   width: 100%;
   height: 100%;
   overflow: visible;
+  perspective: 1000px;
 }
 
 .yumeko-kanji {
   position: absolute;
-  right: 8%;
-  top: 10%;
+  right: 6%;
+  top: 6%;
   writing-mode: vertical-rl;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(3rem, 7vw, 7.5rem);
+  font-size: clamp(3.2rem, 7.5vw, 8rem);
   font-weight: 900;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--accent);
-  opacity: 0.18;
+  opacity: 0.22;
   user-select: none;
   pointer-events: none;
   transition: opacity 0.5s ease, transform 0.5s ease;
-  transform: translate(calc(var(--px, 0) * -12px), calc(var(--py, 0) * -12px));
+  transform: translate(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -14px));
+}
+
+.yumeko-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .yumeko-figure {
@@ -180,8 +188,8 @@ html[data-loading] .hero [data-intro] {
 .yumeko-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 70% 25%;
+  object-fit: contain;
+  object-position: 85% 100%;
   mix-blend-mode: multiply;
   transform: translate(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 8px));
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -190,11 +198,11 @@ html[data-loading] .hero [data-intro] {
 /* Ecstatic crimson eye flare when hovering Yumeko */
 .yumeko-eyes-flare {
   position: absolute;
-  right: 38%;
-  top: 32%;
+  right: 30%;
+  top: 36%;
   width: 140px;
-  height: 60px;
-  background: radial-gradient(ellipse at center, rgba(229, 9, 20, 0.85) 0%, rgba(200, 29, 37, 0.4) 45%, transparent 75%);
+  height: 55px;
+  background: radial-gradient(ellipse at center, rgba(229, 9, 20, 0.9) 0%, rgba(200, 29, 37, 0.45) 45%, transparent 75%);
   filter: blur(8px);
   opacity: 0;
   pointer-events: none;
@@ -209,7 +217,7 @@ html[data-loading] .hero [data-intro] {
 }
 
 .yumeko-art--ecstasy .yumeko-kanji {
-  opacity: 0.35;
+  opacity: 0.4;
   color: #E50914;
 }
 
@@ -218,48 +226,87 @@ html[data-loading] .hero [data-intro] {
   100% { transform: translate(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px)) scale(1.18); opacity: 1; }
 }
 
-/* Floating Playing Cards */
+/* 3D Tumbling & Rotating Playing Cards */
 .yumeko-cards {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
+  transform-style: preserve-3d;
 }
 
-.card-item {
+.card-wrapper {
   position: absolute;
   left: var(--card-x);
   top: var(--card-y);
-  width: clamp(52px, 5.5vw, 76px);
+  width: clamp(54px, 5.8vw, 82px);
   aspect-ratio: 5 / 7;
   transform: 
     translate(calc(var(--px, 0) * var(--card-drift)), calc(var(--py, 0) * var(--card-drift)))
-    rotate(var(--card-rot)) 
+    rotateZ(var(--card-rot-z)) 
     scale(var(--card-scale));
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }
 
-html:not([data-motion="off"]) .card-item {
-  animation: cardFloat var(--card-speed) ease-in-out infinite alternate;
+html:not([data-motion="off"]) .card-wrapper {
+  animation: cardDrift var(--card-speed) ease-in-out infinite alternate;
+}
+
+/* Continuous 3D rotation / spin */
+.card-flipper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+html:not([data-motion="off"]) .card-flipper {
+  animation: cardSpin3D var(--card-spin-speed) linear infinite;
 }
 
 .card-face {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  backface-visibility: hidden;
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(20, 20, 20, 0.28);
+}
+
+.card-face--front {
   background: #FAF7F2;
   border: 1.5px solid #141414;
-  border-radius: 4px;
-  box-shadow: 2px 4px 10px rgba(20, 20, 20, 0.25);
   color: var(--card-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 4px 5px;
+  padding: 4px 6px;
   box-sizing: border-box;
   font-family: var(--font-mono), monospace;
   font-weight: 700;
   user-select: none;
+}
+
+.card-face--back {
+  background: #C81D25;
+  border: 1.5px solid #141414;
+  transform: rotateY(180deg);
+  display: grid;
+  place-items: center;
+}
+
+.card-back-pattern {
+  width: 80%;
+  height: 85%;
+  border: 1.5px solid #FAF7F2;
+  display: grid;
+  place-items: center;
+  color: #FAF7F2;
+  font-size: 1.2rem;
+  background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(250, 247, 242, 0.15) 3px, rgba(250, 247, 242, 0.15) 6px);
 }
 
 .card-corner {
@@ -284,18 +331,31 @@ html:not([data-motion="off"]) .card-item {
   font-size: clamp(16px, 1.8vw, 24px);
 }
 
-@keyframes cardFloat {
+@keyframes cardDrift {
   0% {
     transform: 
-      translate(calc(var(--px, 0) * var(--card-drift)), calc(var(--py, 0) * var(--card-drift) - 6px))
-      rotate(calc(var(--card-rot) - 3deg)) 
+      translate(calc(var(--px, 0) * var(--card-drift)), calc(var(--py, 0) * var(--card-drift) - 8px))
+      rotateZ(calc(var(--card-rot-z) - 5deg)) 
       scale(var(--card-scale));
   }
   100% {
     transform: 
-      translate(calc(var(--px, 0) * var(--card-drift)), calc(var(--py, 0) * var(--card-drift) + 7px))
-      rotate(calc(var(--card-rot) + 4deg)) 
+      translate(calc(var(--px, 0) * var(--card-drift)), calc(var(--py, 0) * var(--card-drift) + 10px))
+      rotateZ(calc(var(--card-rot-z) + 6deg)) 
       scale(var(--card-scale));
+  }
+}
+
+/* 3D rotation in space */
+@keyframes cardSpin3D {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  50% {
+    transform: rotateY(180deg) rotateX(15deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(0deg);
   }
 }
 
@@ -318,32 +378,32 @@ html:not([data-motion="off"]) .card-item {
 }
 
 .chip-item--1 {
-  left: 28%;
-  top: 72%;
+  left: 24%;
+  top: 70%;
   transform: rotate(24deg);
 }
 
 .chip-item--2 {
-  right: 15%;
-  top: 36%;
+  right: 18%;
+  top: 32%;
   background: #141414;
   transform: rotate(-18deg);
 }
 
 .chip-item--3 {
-  right: 42%;
+  right: 46%;
   top: 14%;
   transform: rotate(45deg);
 }
 
 html:not([data-motion="off"]) .chip-item--1 {
-  animation: cardFloat 5.2s ease-in-out infinite alternate-reverse;
+  animation: cardDrift 5.2s ease-in-out infinite alternate-reverse;
 }
 html:not([data-motion="off"]) .chip-item--2 {
-  animation: cardFloat 6.8s ease-in-out infinite alternate;
+  animation: cardDrift 6.8s ease-in-out infinite alternate;
 }
 html:not([data-motion="off"]) .chip-item--3 {
-  animation: cardFloat 4.9s ease-in-out infinite alternate-reverse;
+  animation: cardDrift 4.9s ease-in-out infinite alternate-reverse;
 }
 .living {
   position: absolute;
